@@ -3,7 +3,7 @@ import axios from 'axios'
 const searchUrl = "https://www.thecocktaildb.com/api/json/v1/1/search.php?";
 const singleUrl = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?";
 
-const useFetch = (type = false, query) => {
+const useFetch = (query, type=false) => {
     const url = type ? singleUrl : searchUrl;
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState([])
@@ -17,14 +17,14 @@ const useFetch = (type = false, query) => {
             try {
                 const res = await axios.get(`${url}${query}`)
                 setData(res.data)
-                setCount(res.data.drinks)
-                console.log("ciao");
+                setCount(res.data.drinks.length)
+                console.log(res);
             } catch (error) {
                 setIsError(true)
                 setCount(0)
             }
             setIsLoading(false)
-        },(query));
+        })(query);
     }, [url,query])
 
     return {isLoading, isError, count, data};
